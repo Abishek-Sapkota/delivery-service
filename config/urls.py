@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from apps.delivery.routers import router as delivery_router
-
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = routers.DefaultRouter()
 
@@ -29,5 +29,5 @@ router.registry.extend(delivery_router.registry)
 urlpatterns = [
     path("deliveryservice/api/", include(router.urls)),
     path("deliveryservice/api/", include('rest_framework.urls')),
-
+    
 ]

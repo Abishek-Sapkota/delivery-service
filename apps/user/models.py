@@ -1,5 +1,5 @@
 import uuid
-
+from decouple import config
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.utils import timezone
@@ -49,6 +49,8 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "mobile_number"]
     EMAIL_FIELD = "email"
+
+    database_name = config("USER_MANAGEMENT_DATABASE_NAME")
 
     class Meta:
         ordering = ("-date_joined",)

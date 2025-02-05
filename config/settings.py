@@ -36,6 +36,7 @@ SHARED_APPS = (
     "django_tenants",  # mandatory
     "apps.tenant",  # you must list the app where your tenant model resides in
     "django.contrib.contenttypes",
+    # "corsheaders"
     # everything below here is optional
     "django.contrib.auth",
     "django.contrib.sessions",
@@ -48,7 +49,7 @@ TENANT_APPS = (
     "django.contrib.contenttypes",
     "django_filters",
     "rest_framework_simplejwt",
-    "corsheaders",
+    # "corsheaders",
     "apps.user",
     
     "apps.delivery",
@@ -57,7 +58,7 @@ TENANT_APPS = (
 
 TENANT_MODEL = "tenant.Client"  # app.Model
 
-TENANT_DOMAIN_MODEL = "tenant.Domain"  # app.Model
+TENANT_DOMAIN_MODEL = "tenant.Domain"  # app.Domain
 
 INSTALLED_APPS = list(SHARED_APPS) + [
     app for app in TENANT_APPS if app not in SHARED_APPS
@@ -66,7 +67,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [
 
 MIDDLEWARE = [
     "apps.tenant.middlewares.DibERPTenantMiddleware",
-    "django_tenants.middleware.main.TenantMainMiddleware",
+   
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -101,6 +102,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
 DATABASES = {
     "default": {
         "ENGINE": "django_tenants.postgresql_backend",
@@ -129,7 +131,7 @@ DATABASES = {
 }
 
 DATABASE_ROUTERS = (
-    "config.db_router.AttributeBasedDatabaseRouter",
+    "config.db_router.MultiDbSchemaRouter",
     "django_tenants.routers.TenantSyncRouter",
 )
 
@@ -180,6 +182,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework.filters.SearchFilter",
@@ -192,4 +195,11 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+HOSTNAME = config("HOSTNAME")
+
+MIGRATION_MODULES = {
+    "tenant": None,  # Disables migrations for tenant app
+    "user": None,    # Disables migrations for user app
 }

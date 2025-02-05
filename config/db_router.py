@@ -1,15 +1,18 @@
-class AttributeBasedDatabaseRouter:
+class MultiDbSchemaRouter:
+    """
+    A router to control all database operations on models in the
+    auth and contenttypes applications.
+    """
+
+    user_app_labels = {"user", }
+
     def db_for_read(self, model, **hints):
-        # Use the model's custom database attribute if defined
-        return getattr(model, "database_name", "default")
-
-    def db_for_write(self, model, **hints):
-        # Use the model's custom database attribute if defined
-        return getattr(model, "database_name", "default")
-
-    def allow_relation(self, obj1, obj2, **hints):
+        """
+        Attempts to read auth and contenttypes models go to auth_db.
+        """
+        if model._meta.app_label in self.user_app_labels:
+            return "user_management"
         return None
 
-    def allow_migrate(self, db, app_label, model_name=None, **hints):
-        # Prevent migrations on non-default databases
-        return db == "default"
+    def db_for_write(self, model, **hints):
+        return None
