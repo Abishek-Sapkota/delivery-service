@@ -67,7 +67,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [
 
 MIDDLEWARE = [
     "apps.tenant.middlewares.DibERPTenantMiddleware",
-   
+    "config.middlewares.SetupSchemaNameMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

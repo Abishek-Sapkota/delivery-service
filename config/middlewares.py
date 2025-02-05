@@ -5,7 +5,7 @@ from django.db import connections, connection as con
 class SetupSchemaNameMiddleware(MiddlewareMixin):
     def process_request(self, request):
         for alias in connections:
-            if alias not in ["service_control", "default",]:
+            if alias not in ["service_control", "default"]:
                 connection = connections[alias]
                 connection_options = connection.settings_dict.get("OPTIONS", {})
                 connection_options["options"] = f"-c search_path={con.schema_name}"
