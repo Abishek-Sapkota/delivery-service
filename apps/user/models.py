@@ -50,7 +50,6 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ["username", "mobile_number"]
     EMAIL_FIELD = "email"
 
-    database_name = config("USER_MANAGEMENT_DATABASE_NAME")
 
     class Meta:
         ordering = ("-date_joined",)
@@ -74,6 +73,8 @@ class Profile(models.Model):
     Method:
         The __str__ method of the UserOtp class returns the email of the associated User object.
     """
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
 
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="profile", null=True, blank=True

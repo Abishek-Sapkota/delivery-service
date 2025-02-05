@@ -1,6 +1,5 @@
 
 from django.db import models
-
 class Delivery(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),

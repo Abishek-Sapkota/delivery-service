@@ -19,7 +19,7 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     """
     queryset = Delivery.objects.all()
     serializer_class = DeliverySerializer
-    # authentication_classes = [JWTAuthentication] 
+ 
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = DeliveryFilter
